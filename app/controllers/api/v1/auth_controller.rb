@@ -5,7 +5,7 @@ class Api::V1::AuthController < Api::V1::ApplicationController
         user = User.find_by(email: params[:email])
         if user && user.authenticate(params[:password])
             render json: {
-                token: JWT.encode({ user_id: user.id }, 'I_KNOW_WHAT_I_KNOW')
+                token: JWT.encode({ user_id: user.id }, ENV['JWT_secret'])
             }
         else
             render json: {
