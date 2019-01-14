@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
     def create
         user = User.create(user_params)
-        render json: user
+        render json: user, methods:[ :token ]
     end
 
     def index
@@ -39,6 +39,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:username, :email, :password)
+        params.permit(:username, :email, :password)
     end
 end
