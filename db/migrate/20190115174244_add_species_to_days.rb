@@ -1,0 +1,44 @@
+class AddSpeciesToDays < ActiveRecord::Migration[5.2]
+  def change
+    add_column :days, :acrodictys, :string
+    add_column :days, :agrocybe, :string
+    add_column :days, :algae, :string
+    add_column :days, :alternaria, :string
+    add_column :days, :arthimium, :string
+    add_column :days, :ascomycetes, :string
+    add_column :days, :asperisporium, :string
+    add_column :days, :basidiomycetes, :string
+    add_column :days, :beltrania, :string
+    add_column :days, :botrytis, :string
+    add_column :days, :cercospora, :string
+    add_column :days, :cladosporium, :string
+    add_column :days, :curvularia, :string
+    add_column :days, :d_conidia_hyphae, :string
+    add_column :days, :dendryphiella, :string
+    add_column :days, :drechslera_helmintho, :string
+    add_column :days, :dichotomophthora, :string
+    add_column :days, :diplococcum, :string
+    add_column :days, :epicoccum, :string
+    add_column :days, :fusariella, :string
+    add_column :days, :ganoderma, :string
+    add_column :days, :helicomina, :string
+    add_column :days, :microsporum, :string
+    add_column :days, :misc_fungus_hyaline, :string
+    add_column :days, :monodictys, :string
+    add_column :days, :myxomycete_smut, :string
+    add_column :days, :nigrospora, :string
+    add_column :days, :penicillium_aspergillus, :string
+    add_column :days, :periconia, :string
+    add_column :days, :pestalotiopsis, :string
+    add_column :days, :pithomyces, :string
+    add_column :days, :powdery_mildew, :string
+    add_column :days, :pseudocercospora, :string
+    add_column :days, :puccinia, :string
+    add_column :days, :rust, :string
+    add_column :days, :spegazinia, :string
+    add_column :days, :stemphyllium, :string
+    add_column :days, :tetrapola, :string
+    add_column :days, :tilletia, :string
+    add_column :days, :torula, :string
+  end
+end
