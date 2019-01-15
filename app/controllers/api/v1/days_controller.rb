@@ -5,7 +5,7 @@ class Api::V1::DaysController < Api::V1::ApplicationController
 
     def create
         day = Day.create(day_params)
-        render json: day, methods:[ :token ]
+        render json: day
     end
 
     def index
@@ -39,6 +39,6 @@ class Api::V1::DaysController < Api::V1::ApplicationController
     end
 
     def day_params
-        params.permit(:dayname, :email, :password)
+        params.permit(:month, :date, :year)
     end
 end
