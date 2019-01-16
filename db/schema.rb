@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2019_01_15_174244) do
     t.string "month"
     t.integer "date"
     t.integer "year"
+    t.date "fulldate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "acrodictys"
