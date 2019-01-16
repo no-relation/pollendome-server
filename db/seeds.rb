@@ -21,9 +21,13 @@ days = []
 
 CSV.foreach("pollendromedata.csv") do |row|
     params = headers.zip(row.map {|item| item.downcase.strip}).to_h
+    if (params["month"] != "month") && (params["date"].to_i != 0) && (params["year"].to_i != 0)
+        params["fulldate"] = Date.parse("#{params["month"]} #{params["date"]}, #{params["year"]}").to_s
+    end
+    
     day = Day.new(params)
     days << day
 end
 
+days.shift
 Day.import days
-Day.first.destroy

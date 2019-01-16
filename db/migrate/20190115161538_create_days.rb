@@ -4,6 +4,7 @@ class CreateDays < ActiveRecord::Migration[5.2]
       t.string :month
       t.integer :date
       t.integer :year
+      t.date :fulldate
 
       t.timestamps
     end
