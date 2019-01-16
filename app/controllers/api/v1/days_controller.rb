@@ -1,7 +1,7 @@
 class Api::V1::DaysController < Api::V1::ApplicationController
     before_action :define_current_day
 
-    skip_before_action :check_authentication, only: [ :index, :show ]
+    skip_before_action :check_authentication, only: [ :index, :show, :find ]
 
     def create
         day = Day.create(day_params)
@@ -24,6 +24,23 @@ class Api::V1::DaysController < Api::V1::ApplicationController
     def destroy
         current_day.destroy
         render json: current_day
+    end
+
+    def find
+        # have to build a query for only the params that exist
+        query = {}
+        if params[:year]
+            query[:year] = params[:year]
+        end
+        if params[:month]
+            query[:month] = params[:month]
+        end
+        if params[:date]
+            query[:date] = params[:date]
+        end
+
+        days = Day.where( query )
+        render json: days
     end
 
     def define_current_day

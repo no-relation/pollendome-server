@@ -15,12 +15,12 @@ User.create(username: 'susann', email: 'susann@example.com', password: '0000')
 Day.destroy_all
 
 csvfile = CSV.read('pollendromedata.csv')
-headers = csvfile[0].map { |col| col.strip.downcase.strip.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
+headers = csvfile[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 
 days = []
 
 CSV.foreach("pollendromedata.csv") do |row|
-    params = headers.zip(row).to_h
+    params = headers.zip(row.map {|item| item.downcase.strip}).to_h
     day = Day.new(params)
     days << day
 end
