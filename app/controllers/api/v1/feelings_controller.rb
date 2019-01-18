@@ -2,7 +2,8 @@ class Api::V1::FeelingsController < Api::V1::ApplicationController
     before_action :define_current_feeling
 
     def create
-        feeling = Feeling.create(feeling_params)
+        day = Day.find_or_create_by(fulldate: params[:fulldate])
+        feeling = Feeling.create(rating: params[:rating], user_id: params[:user_id], day_id: day.id)
         render json: feeling
     end
 
