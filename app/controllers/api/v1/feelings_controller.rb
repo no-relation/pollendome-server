@@ -29,7 +29,7 @@ class Api::V1::FeelingsController < Api::V1::ApplicationController
         user = User.find(params[:id])
         feelings = user.feelings
         days = user.feelings.map{ |feeling| feeling.day }
-        render json: feelings.zip(days)
+        render json: feelings.zip(days).map{|k,v| {feeling: k, day: v}}
     end
 
     def define_current_feeling
