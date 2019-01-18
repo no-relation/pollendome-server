@@ -1,7 +1,7 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
     before_action :define_current_user
 
-    skip_before_action :check_authentication, only: [ :index, :create ]
+    skip_before_action :check_authentication, only: [ :create ]
 
     def create
         user = User.create(user_params)
