@@ -4,7 +4,8 @@ class Api::V1::FeelingsController < Api::V1::ApplicationController
     def create
         day = Day.find_or_create_by(fulldate: params[:fulldate])
         feeling = Feeling.create(rating: params[:rating], user_id: params[:user_id], day_id: day.id)
-        render json: feeling
+        byebug
+        render json: feeling.user.feelings
     end
 
     def index
