@@ -72,6 +72,6 @@ class Api::V1::DaysController < Api::V1::ApplicationController
     end
 
     def day_params
-        params.permit(:month, :date, :year)
+        params.permit(:fulldate, :year, :month, :date)
     end
 end

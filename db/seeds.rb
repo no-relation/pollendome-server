@@ -14,16 +14,17 @@ User.create(username: 'susann', email: 'susann@example.com', password: '0000')
 
 Day.destroy_all
 
-csvfile = CSV.read('pollendromedata.csv')
+csvfile = CSV.read('pollendromedataMOLD.csv')
 headers = csvfile[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 
 days = []
 
-CSV.foreach("pollendromedata.csv") do |row|
+CSV.foreach("pollendromedataMOLD.csv") do |row|
     params = headers.zip(row.map {|item| item.downcase.strip}).to_h
-    if (params["month"] != "month") && (params["date"].to_i != 0) && (params["year"].to_i != 0)
-        params["fulldate"] = Date.parse("#{params["month"]} #{params["date"]}, #{params["year"]}").to_s
-    end
+    params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
+    # if (params["month"] != "month") && (params["date"].to_i != 0) && (params["year"].to_i != 0)
+    #     params["fulldate"] = Date.parse("#{params["year"]}#{params["month"]}#{params["date"]}").to_s
+    # end
     
     day = Day.new(params)
     days << day
