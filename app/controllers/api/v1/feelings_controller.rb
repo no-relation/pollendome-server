@@ -4,7 +4,10 @@ class Api::V1::FeelingsController < Api::V1::ApplicationController
     def create
         day = Day.find_or_create_by(fulldate: params[:fulldate])
         feeling = Feeling.create(rating: params[:rating], user_id: params[:user_id], day_id: day.id)
-        render json: feeling.user.feelings
+        user = User.find(params[user_id])
+        feelings = user.feelings
+        days = user.feelings.map{ |feeling| feeling.day }
+        render json: feelings.zip(days).map{|k,v| {feeling: k, day: v}}
     end
 
     def index
