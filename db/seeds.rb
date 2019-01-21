@@ -17,12 +17,24 @@ User.create(username: "Sneezy Dwarf", email: 'sneezy@fairy.land', password: '000
 
 csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
 csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
+csvfilePollenDayForecast = CSV.read("pollenDailyyAverages.csv")
 headersMOLD = csvfileMOLD[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPOLLEN = csvfilePOLLEN[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
+headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
+
 csvfileMOLD.shift
 csvfilePOLLEN.shift
+csvfilePollenDayForecast.shift
 
 days = []
+
+csvfilePollenDayForecast.each do |row|
+    params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
+    params["fulldate"] = Date.strptime("3000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
+    
+    day = Day.new(params)
+    days << day
+end
 
 csvfileMOLD.each do |row|
     params = headersMOLD.zip(row.map {|item| item.downcase.strip}).to_h

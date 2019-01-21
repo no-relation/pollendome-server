@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_20_151835) do
+ActiveRecord::Schema.define(version: 2019_01_21_170332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,14 @@ ActiveRecord::Schema.define(version: 2019_01_20_151835) do
     t.string "walnut"
     t.string "magnolia"
     t.string "wild_carrot"
+    t.integer "day"
+    t.string "cottonwood"
+    t.string "mesquite"
+    t.string "sweetgum"
+    t.string "baldcypress"
+    t.string "otherweed"
+    t.string "othertree"
+    t.string "plantain"
   end
 
   create_table "feelings", force: :cascade do |t|
