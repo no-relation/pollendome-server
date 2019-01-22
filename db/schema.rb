@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_22_015838) do
+ActiveRecord::Schema.define(version: 2019_01_22_205259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,33 +70,50 @@ ActiveRecord::Schema.define(version: 2019_01_22_015838) do
     t.string "walnut"
     t.string "birch"
     t.string "cotton_wood"
+    t.string "dogwood"
     t.string "elm"
     t.string "glandular_mesquite"
     t.string "hackberry"
     t.string "hickory"
     t.string "mulberry"
     t.string "maple"
+    t.string "osage_orange"
     t.string "oak"
     t.string "sycamore"
     t.string "pine"
+    t.string "privet"
     t.string "sweet_gum"
+    t.string "gingko_biloba"
     t.string "willow"
     t.string "amaranth"
+    t.string "burweed___marshelder"
     t.string "cattail"
+    t.string "dog_fennel"
+    t.string "lambs_quarters"
     t.string "ragweed"
     t.string "rumex"
     t.string "sagebrush"
     t.string "saltbrush"
     t.string "sedge"
     t.string "ashe_juniper___bald_cypress"
+    t.string "bushes"
+    t.string "sneezeweed"
+    t.string "black_gum"
     t.string "other_weed"
     t.string "other_tree"
     t.string "plantago"
+    t.string "partridge_pea"
+    t.string "pigweed"
     t.string "alder"
     t.string "cedar"
     t.string "hazelnut"
+    t.string "plum_grannet"
     t.string "aster"
     t.string "nettle"
+    t.string "magnolia"
+    t.string "wild_carrot"
+    t.string "black_walnut"
+    t.string "walnutjuglans"
   end
 
   create_table "feelings", force: :cascade do |t|

@@ -17,19 +17,30 @@ User.create(username: "Sneezy Dwarf", email: 'sneezy@fairy.land', password: '000
 
 csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
 csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
-csvfilePollenDayForecast = CSV.read("pollenDailyyAverages.csv")
+csvfilePollenDayForecast = CSV.read("pollenDailyAverages.csv")
+csvfileMoldDayForecast = CSV.read("moldDailyAverages.csv")
 headersMOLD = csvfileMOLD[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPOLLEN = csvfilePOLLEN[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
+headersMDayCast = csvfileMoldDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 
 csvfileMOLD.shift
 csvfilePOLLEN.shift
 csvfilePollenDayForecast.shift
+csvfileMoldDayForecast.shift
 
 days = []
 
 csvfilePollenDayForecast.each do |row|
     params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
+    params["fulldate"] = Date.strptime("3000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
+    
+    day = Day.new(params)
+    days << day
+end
+
+csvfileMoldDayForecast.each do |row|
+    params = headersMDayCast.zip(row.map {|item| item.downcase.strip}).to_h
     params["fulldate"] = Date.strptime("3000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
     
     day = Day.new(params)
@@ -61,20 +72,21 @@ Day.import days
 
 # selected_day_id = Day.find_by(fulldate: "").id
 # Feeling.create(user_id: 3, rating: , day_id: selected_day_id)
+seed_user_id = User.find_by(email: 'sneezy@fairy.land').id
 selected_day_id = Day.find_by(fulldate: "2018-05-07").id
-Feeling.create(user_id: 3, rating: 5, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-05-08").id
-Feeling.create(user_id: 3, rating: 5, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-05-09").id
-Feeling.create(user_id: 3, rating: 5, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-05-10").id
-Feeling.create(user_id: 3, rating: 5, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-05-11").id
-Feeling.create(user_id: 3, rating: 5, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
 
 selected_day_id = Day.find_by(fulldate: "2018-09-17").id
-Feeling.create(user_id: 3, rating: 0, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-09-18").id
-Feeling.create(user_id: 3, rating: 0, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-09-19").id
-Feeling.create(user_id: 3, rating: 0, day_id: selected_day_id)
+Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)

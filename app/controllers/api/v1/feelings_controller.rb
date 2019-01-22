@@ -11,7 +11,10 @@ class Api::V1::FeelingsController < Api::V1::ApplicationController
     end
 
     def index
-        render json: Feeling.all
+        user = User.find(params[:userid])
+        feelings = user.feelings
+        days = user.feelings.map{ |feeling| feeling.day }
+        render json: feelings.zip(days).map{|k,v| {feeling: k, day: v}}
     end
 
     def show
