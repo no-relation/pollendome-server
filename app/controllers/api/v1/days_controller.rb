@@ -29,35 +29,6 @@ class Api::V1::DaysController < Api::V1::ApplicationController
     def find
         days = Day.where(fulldate: Date.parse(params[:startdate])..Date.parse(params[:enddate]))
         sorted_days = days.sort_by{ |day| day.fulldate }
-        # if params[:startdate][5..6] == params[:enddate][5..6]
-        #     days = Day.where(fulldate: params[:startdate]..params[:enddate])
-        # else
-        #     # 30 days has September, April, June, and November...
-        #     lastdate = {
-        #         "01": 31,
-        #         "02": 28,
-        #         "03": 31,
-        #         "04": 30,
-        #         "05": 31,
-        #         "06": 30,
-        #         "07": 31,
-        #         "08": 31,
-        #         "09": 31,
-        #         "10": 31,
-        #         "11": 30,
-        #         "12": 31,
-        #     }
-        #     year1 = params[:startdate][0..3]
-        #     month1 = params[:startdate][5..6]
-        #     date1 = lastdate[month1.to_sym]
-        #     enddate = "#{year1}-#{month1}-#{date1}"
-        #     days1 = Day.where(fulldate: params[:startdate]..enddate)
-        #     year2 = params[:enddate][0..3]
-        #     month2 = params[:enddate][5..6]
-        #     date2 = "01"
-        #     days2 = Day.where(fulldate: "#{year2}-#{month2}-#{date2}"..params[:enddate])
-        #     days = days1 + days2
-        # end
         render json: sorted_days
     end
 

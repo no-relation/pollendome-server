@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    has_many :feelings
+    has_many :feelings, dependent: :destroy
     has_many :days, through: :feelings
     has_secure_password
 
