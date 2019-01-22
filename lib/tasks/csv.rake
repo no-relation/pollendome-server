@@ -8,17 +8,7 @@ namespace :csv do
       return csvArray[0].map { |colA| colA.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
     end
     
-    # csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
-    # headersMOLD = csvfileMOLD[0].map { |colA| colA.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
-    # csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
-    # headersPOLLEN = csvfilePOLLEN[0].map { |colB| colB.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
-
-    # csvfilePollenDayForecast = CSV.read("pollenDailyyAverages.csv")
-    # headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
-    
-
-    headers = headersFromCSV("pollendromedataMOLD.csv").concat(headersFromCSV("pollendromedataPOLLEN.csv"), headersFromCSV("pollenDailyyAverages.csv"))
-    byebug
+    headers = headersFromCSV("pollendromedataMOLD.csv").concat(headersFromCSV("pollendromedataPOLLEN.csv"))
     current_col_names =  Day.column_names
     new_col_names = headers - current_col_names
     new_col_command = new_col_names.join(' ')

@@ -1,4 +1,4 @@
-Week,Ash,Walnut,Birch,CottonWood,Elm,Mesquite,Hackberry,Hickory,Mulberry,Maple,Oak,Sycamore,Pine,SweetGum,Willow,Amaranth,Cattail,Ragweed,Rumex,Sagebrush,Saltbrush,Sedge,BaldCypress,OtherWeed,OtherTree,Plantain,Alder,Cedar,Hazelnut,Aster,Nettle
+Week,Ash, Walnut, Birch, Cotton Wood, Elm, Glandular Mesquite, Hackberry, Hickory, Mulberry, Maple, Oak, Sycamore, Pine, Sweet Gum, Willow, Amaranth, Cattail, Ragweed, Rumex, Sagebrush, Saltbrush, Sedge, Ashe Juniper / Bald Cypress, Other Weed, Other Tree, Plantago, Alder, Cedar, Hazelnut, Aster, Nettle
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,99.7,0,0,0,0,1.3,0,0,0
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.3,0.4,0,0,0,43.9,0,2,0,0.4,2,0,0,0
 2,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,0,0,0,1.1,0,0.4,0,0,55.3,0,0.6,0,0,0.4,0,0,0
