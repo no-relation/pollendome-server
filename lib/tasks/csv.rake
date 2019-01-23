@@ -14,7 +14,6 @@ namespace :csv do
     current_col_names =  Day.column_names
     new_col_names = headers - current_col_names
     new_col_command = new_col_names.join(' ')
-    byebug
     if (new_col_names.length != 0)
       sh "rails generate migration AddSpeciesToDays #{new_col_command}"
     end

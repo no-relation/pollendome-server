@@ -31,22 +31,6 @@ csvfileMoldDayForecast.shift
 
 days = []
 
-csvfilePollenDayForecast.each do |row|
-    params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
-    params["fulldate"] = Date.strptime("3000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
-    
-    day = Day.new(params)
-    days << day
-end
-
-csvfileMoldDayForecast.each do |row|
-    params = headersMDayCast.zip(row.map {|item| item.downcase.strip}).to_h
-    params["fulldate"] = Date.strptime("3000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
-    
-    day = Day.new(params)
-    days << day
-end
-
 csvfileMOLD.each do |row|
     params = headersMOLD.zip(row.map {|item| item.downcase.strip}).to_h
     # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
@@ -66,6 +50,22 @@ csvfilePOLLEN.each do |row|
         day = Day.new(params)
         days << day
     end
+end
+
+csvfilePollenDayForecast.each do |row|
+    params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
+    params["fulldate"] = Date.strptime("2019-#{params["day"]}", "%Y-%j") if params["day"] != "day"
+    
+    day = Day.new(params)
+    days << day
+end
+
+csvfileMoldDayForecast.each do |row|
+    params = headersMDayCast.zip(row.map {|item| item.downcase.strip}).to_h
+    params["fulldate"] = Date.strptime("2019-#{params["day"]}", "%Y-%j") if params["day"] != "day"
+    
+    day = Day.new(params)
+    days << day
 end
 
 Day.import days
