@@ -23,6 +23,9 @@ gem 'jwt'
 # Figaro to configure secret ENV variables
 gem 'figaro'
 
+# Nokogiri for webpage scraping
+gem 'nokogiri'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
