@@ -3,7 +3,7 @@ require 'open-uri'
 require 'byebug'
 require "rubygems/text"
 
-def todays_params
+# def todays_params
     ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
     # current column names of Day table
@@ -104,7 +104,7 @@ def todays_params
     # webpageCode.close
 
     # find date on page and turn into Date object
-    date = Date.parse(doc.css('font[color="#02789C"]')[0].text)
+    date = doc.css('font[color="#02789C"]')[0].text
 
     # names where calculating Levenshtein distance doesn't give best answer
     EXCEPTIONS = {
@@ -158,6 +158,8 @@ def todays_params
 
     valueElements = doc.css('td[width="14%"]>strong')
     values = valueElements.map do |nm| nm.text.strip end
+    fulldate = {fulldate: date}
 
+    puts fulldate.merge(names.zip(values).to_h)
     return {fulldate: date}.merge(names.zip(values).to_h)
-end
+# end
