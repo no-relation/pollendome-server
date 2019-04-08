@@ -105,10 +105,28 @@ doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
 nameElements = doc.css('td[width="35%"]>strong')
 page_names = nameElements.map do |nm| nm.text.strip end
 names = page_names.map do |name| 
-    col_names.each do |oldname| 
-        puts "#{name} -> #{oldname}: #{ld.call(name, oldname)}"
+    lev_dists = col_names.map do |oldname| 
+        ld.call(name, oldname)
     end
+    col_names[lev_dists.index(lev_dists.min)]
 end
+# exceptions:
+# ["cercospora", "  Acer (Maple)"], 10; actual: maple, 10
+# ["helicomina", "  Pinaceae (Pine)"], 13 actual: pine, 14
+# ["curvularia", "  Betula (Birch)"], 12; actual: birch, 12
+# ["cercospora", "  Quercus (Oak)"], 10; actual: oak, 13
+# ["created_at", "  Cupressaceae (Cedar)"], 17; actual: cedar, 17
+# ["helicomina", "  Tilia (Linden)"], 12; actual: tilletia(?), 13
+# ["amaranth", "  Fraxinus (Ash)"], 12; actual: ash, 13
+# ["diplococcum", "  Ulmus (Elm)"], 11; actual: elm, 11
+# ["alternaria", "  Artemeisia (Sage)"], 15; actual: sagebrush, 17
+# ["asperisporium", "  Rumex (Sheep Sorel)"], 17; actual: rumex, 17
+# ["ascomycetes", "  Asteraceae (Aster)"], 15; actual: aster, 15
+# ["created_at", "  Cyperaceae(Sedge)"], 14; actual: sedge, 15
+# ["basidiomycetes", "  Oidium/Erysiphe"], 12; actual: powdery_mildew, 14
+# ["cercospora", "  Ascopores"], 7; actual: ascomycetes, 8
+# ["ascomycetes", "  Smuts/Myxomycetes"] 10; actual: myxomycete_smut, 12
+
 valueElements = doc.css('td[width="14%"]>strong')
 values = valueElements.map do |nm| nm.text.strip end
 # byebug
