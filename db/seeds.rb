@@ -24,6 +24,7 @@ headersPOLLEN = csvfilePOLLEN[0].map { |col| col.strip.downcase.gsub(' ', '_').g
 headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersMDayCast = csvfileMoldDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 
+# first line of each is the names of the headers, which we already get in the previous four lines
 csvfileMOLD.shift
 csvfilePOLLEN.shift
 csvfilePollenDayForecast.shift

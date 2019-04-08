@@ -3,14 +3,14 @@ class Api::V1::DaysController < Api::V1::ApplicationController
 
     skip_before_action :check_authentication, only: [ :index, :show, :find ]
 
-    def create
-        day = Day.create(day_params)
-        render json: day
-    end
+    # def create
+    #     day = Day.create(day_params)
+    #     render json: day
+    # end
 
-    def index
-        render json: Day.all
-    end
+    # def index
+    #     render json: Day.all
+    # end
 
     def show
         render json: current_day
