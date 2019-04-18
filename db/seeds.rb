@@ -53,6 +53,7 @@ csvfilePOLLEN.each do |row|
     end
 end
 
+# TODO: change forecast so date is one year in the future?
 csvfilePollenDayForecast.each do |row|
     params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
     params["fulldate"] = Date.strptime("2019-#{params["day"]}", "%Y-%j") if params["day"] != "day"
