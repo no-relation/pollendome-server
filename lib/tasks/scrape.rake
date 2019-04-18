@@ -31,10 +31,10 @@ namespace :scrape do
             # current column names of Day table
             doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
 
-            # find date on page and turn into Date object
+            # find date on page and turn into text
             date = doc.css('font[color="#02789C"]')[0].text
 
-            # nokogiri selects page elements; have to redo if webpage is redesigned
+            # nokogiri selects page elements for species names; have to redo if webpage is redesigned
             nameElements = doc.css('td[width="35%"]>strong')
             page_names = nameElements.map do |nm| 
                 name = nm.text.strip
@@ -44,7 +44,6 @@ namespace :scrape do
                     name 
                 end
             end
-
             names = page_names.map do |name| 
                 lev_dists = col_names.map do |oldname| 
                     ld.call(name, oldname)
@@ -52,16 +51,20 @@ namespace :scrape do
                 col_names[lev_dists.index(lev_dists.min)]
             end
 
+            # find today's counts on the page
+            values = doc.css('td[width="14%"]>strong').map { |nm| nm.text.strip }
 
-            valueElements = doc.css('td[width="14%"]>strong')
-            values = valueElements.map do |nm| nm.text.strip end
-            fulldate = {fulldate: date}
-
-            return {fulldate: date}.merge(names.zip(values).to_h)
+            params = {fulldate: date}.merge(names.zip(values).to_h)
+            params.delete("id")
+            return params
         end
 
         day = Day.new(todays_params)
-        byebug
-        puts "Created Day #{day.id}: #{day.fulldate}"
+        if Day.where(fulldate: day.fulldate).length != 0 
+            puts "Day with that date already exists"
+        else 
+            day.save
+            puts "Created Day #{day.id}: #{day.fulldate}"
+        end
     end
 end
