@@ -7,7 +7,25 @@ namespace :scrape do
 
     desc "for the scraping of webpages to create Day objects"
     task houston_pollen: :environment do
+
+        # names where calculating Levenshtein distance doesn't give best answer; might need additions, haven't seen all the names they use for the daily page yet
+        EXCEPTIONS = {
+            "  Acer (Maple)": 'maple',
+            "  Pinaceae (Pine)": 'pine',
+            "  Betula (Birch)": 'birch',
+            "  Quercus (Oak)": 'oak',
+            "  Cupressaceae (Cedar)": 'cedar',
+            "  Tilia (Linden)": '???',
+            "  Fraxinus (Ash)": 'ash',
+            "  Ulmus (Elm)": 'elm',
+            "  Artemeisia (Sage)": 'sagebrush',
+            "  Oidium/Erysiphe": 'powdery_mildew',
+            "  Ascopores": 'ascomycetes',
+            "  Smuts/Myxomycetes": 'myxomycete_smut'
+        }
+
         def todays_params
+            col_names = Day.columns.map{|col| col.name}
             ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
             # current column names of Day table
@@ -16,21 +34,6 @@ namespace :scrape do
             # find date on page and turn into Date object
             date = doc.css('font[color="#02789C"]')[0].text
 
-            # names where calculating Levenshtein distance doesn't give best answer; might need additions, haven't seen all the names they use for the daily page yet
-            EXCEPTIONS = {
-                "  Acer (Maple)": 'maple',
-                "  Pinaceae (Pine)": 'pine',
-                "  Betula (Birch)": 'birch',
-                "  Quercus (Oak)": 'oak',
-                "  Cupressaceae (Cedar)": 'cedar',
-                "  Tilia (Linden)": '???',
-                "  Fraxinus (Ash)": 'ash',
-                "  Ulmus (Elm)": 'elm',
-                "  Artemeisia (Sage)": 'sagebrush',
-                "  Oidium/Erysiphe": 'powdery_mildew',
-                "  Ascopores": 'ascomycetes',
-                "  Smuts/Myxomycetes": 'myxomycete_smut'
-            }
             # nokogiri selects page elements; have to redo if webpage is redesigned
             nameElements = doc.css('td[width="35%"]>strong')
             page_names = nameElements.map do |nm| 
@@ -54,10 +57,11 @@ namespace :scrape do
             values = valueElements.map do |nm| nm.text.strip end
             fulldate = {fulldate: date}
 
-            puts fulldate.merge(names.zip(values).to_h)
             return {fulldate: date}.merge(names.zip(values).to_h)
         end
 
-        Day.create(todays_params)
+        day = Day.new(todays_params)
+        byebug
+        puts "Created Day #{day.id}: #{day.fulldate}"
     end
 end
