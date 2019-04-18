@@ -60,11 +60,11 @@ namespace :scrape do
         end
 
         day = Day.new(todays_params)
-        if Day.where(fulldate: day.fulldate).length != 0 
-            puts "Day with that date already exists"
-        else 
+        if day.valid?
             day.save
             puts "Created Day #{day.id}: #{day.fulldate}"
+        else
+            puts day.errors.messages
         end
     end
 end
