@@ -44,6 +44,7 @@ namespace :scrape do
                     name 
                 end
             end
+            # compare name in database to name on webpage and find the Levenshtein distances, select the one with the smallest distance
             names = page_names.map do |name| 
                 lev_dists = col_names.map do |oldname| 
                     ld.call(name, oldname)
@@ -53,7 +54,7 @@ namespace :scrape do
 
             # find today's counts on the page
             values = doc.css('td[width="14%"]>strong').map { |nm| nm.text.strip }
-
+byebug
             params = {fulldate: date}.merge(names.zip(values).to_h)
             params.delete("id")
             return params
@@ -63,7 +64,6 @@ namespace :scrape do
         if day.valid?
             puts "Created Day: #{day.fulldate}"
             puts "Emailing home"
-            # byebug
             AppMailer.new_day_log(day).deliver
             day.save
         else
