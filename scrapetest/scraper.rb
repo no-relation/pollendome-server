@@ -95,13 +95,15 @@ require "rubygems/text"
                                                                                         "aster",
                                                                                         "nettle",
                                                                                         "magnolia",
-                                                                                        "wild_carrot"]      
-    doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
+                                                                                        "wild_carrot"]
+    
+    
 
+    doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))  
     # put Nokogiri output in easily parseable html code
-    # webpageCode = File.open 'webpage.html', 'w'
-    # webpageCode.write(doc)
-    # webpageCode.close
+    webpageCode = File.open 'webpage.html', 'w'
+    webpageCode.write(doc)
+    webpageCode.close
 
     # find date on page and turn into Date object
     date = doc.css('font[color="#02789C"]')[0].text
@@ -116,7 +118,11 @@ require "rubygems/text"
         "  Tilia (Linden)": '???',
         "  Fraxinus (Ash)": 'ash',
         "  Ulmus (Elm)": 'elm',
+        "": '???',
         "  Artemeisia (Sage)": 'sagebrush',
+        "  Rumex (Sheep Sorel)": 'rumex',
+        "  Asteraceae (Aster)": 'aster',
+        "  Cyperaceae(Sedge)": 'sedge'
         "  Oidium/Erysiphe": 'powdery_mildew',
         "  Ascopores": 'ascomycetes',
         "  Smuts/Myxomycetes": 'myxomycete_smut'
@@ -141,25 +147,30 @@ require "rubygems/text"
     nameElements = doc.css('td[width="35%"]>strong')
     page_names = nameElements.map do |nm| 
         name = nm.text.strip
-        if EXCEPTIONS.keys.include?(name.to_sym)
-            EXCEPTIONS[name.to_sym]
-        else    
-            name 
-        end
+        # if EXCEPTIONS.keys.include?(name.to_sym)
+        #     EXCEPTIONS[name.to_sym]
+        # else    
+        #     name 
+        # end
     end
-
     names = page_names.map do |name| 
         lev_dists = col_names.map do |oldname| 
             ld.call(name, oldname)
         end
+        puts "#{name} -> #{col_names[lev_dists.index(lev_dists.min)]} at #{lev_dists.min}"
         col_names[lev_dists.index(lev_dists.min)]
+        byebug
     end
-
+    puts "#{names.size} names"
 
     valueElements = doc.css('td[width="14%"]>strong')
-    values = valueElements.map do |nm| nm.text.strip end
+    values = valueElements.map do |val| val.text.strip end
+    puts "#{values.size} values"
     fulldate = {fulldate: date}
+    
+    params = fulldate.merge(names.zip(values).to_h)
+    params.each { |k,v| puts "#{k}: #{v}"}
+    puts "size: #{params.size}"
 
-    puts fulldate.merge(names.zip(values).to_h)
-    return {fulldate: date}.merge(names.zip(values).to_h)
+    return params
 # end

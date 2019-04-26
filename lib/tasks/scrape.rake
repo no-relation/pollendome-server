@@ -11,17 +11,21 @@ namespace :scrape do
         # names where calculating Levenshtein distance doesn't give best answer; might need additions, haven't seen all the names they use for the daily page yet
         EXCEPTIONS = {
             "  Acer (Maple)": 'maple',
-            "  Pinaceae (Pine)": 'pine',
-            "  Betula (Birch)": 'birch',
-            "  Quercus (Oak)": 'oak',
-            "  Cupressaceae (Cedar)": 'cedar',
-            "  Tilia (Linden)": '???',
-            "  Fraxinus (Ash)": 'ash',
-            "  Ulmus (Elm)": 'elm',
-            "  Artemeisia (Sage)": 'sagebrush',
-            "  Oidium/Erysiphe": 'powdery_mildew',
-            "  Ascopores": 'ascomycetes',
-            "  Smuts/Myxomycetes": 'myxomycete_smut'
+        "  Pinaceae (Pine)": 'pine',
+        "  Betula (Birch)": 'birch',
+        "  Quercus (Oak)": 'oak',
+        "  Cupressaceae (Cedar)": 'cedar',
+        "  Tilia (Linden)": '???',
+        "  Fraxinus (Ash)": 'ash',
+        "  Ulmus (Elm)": 'elm',
+        "": '???',
+        "  Artemeisia (Sage)": 'sagebrush',
+        "  Rumex (Sheep Sorel)": 'rumex',
+        "  Asteraceae (Aster)": 'aster',
+        "  Cyperaceae(Sedge)": 'sedge'
+        "  Oidium/Erysiphe": 'powdery_mildew',
+        "  Ascopores": 'ascomycetes',
+        "  Smuts/Myxomycetes": 'myxomycete_smut'
         }
 
         def todays_params
@@ -38,12 +42,14 @@ namespace :scrape do
             nameElements = doc.css('td[width="35%"]>strong')
             page_names = nameElements.map do |nm| 
                 name = nm.text.strip
+                # replace known LevDist exceptions
                 if EXCEPTIONS.keys.include?(name.to_sym)
                     EXCEPTIONS[name.to_sym]
                 else    
                     name 
                 end
             end
+            puts page_names
             # compare name in database to name on webpage and find the Levenshtein distances, select the one with the smallest distance
             names = page_names.map do |name| 
                 lev_dists = col_names.map do |oldname| 
@@ -53,7 +59,7 @@ namespace :scrape do
             end
 
             # find today's counts on the page
-            values = doc.css('td[width="14%"]>strong').map { |nm| nm.text.strip }
+            values = doc.css('td[width="14%"]>strong').map { |val| val.text.strip }
 byebug
             params = {fulldate: date}.merge(names.zip(values).to_h)
             params.delete("id")
