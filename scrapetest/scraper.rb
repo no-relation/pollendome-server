@@ -149,10 +149,14 @@ require "rubygems/text"
         name = nm.text.strip
         if EXCEPTIONS.keys.include?(name.to_sym)
             EXCEPTIONS[name.to_sym]
+        elsif name.blank?
+            "???"
         else    
             name 
         end
     end
+    page_names.each {|name| puts name}
+    byebug
     names = page_names.map do |name| 
         lev_dists = col_names.map do |oldname| 
             ld.call(name, oldname)

@@ -45,11 +45,12 @@ namespace :scrape do
                 # replace known LevDist exceptions
                 if EXCEPTIONS.keys.include?(name.to_sym)
                     EXCEPTIONS[name.to_sym]
+                elsif name.blank?
+                    "???"
                 else    
                     name 
                 end
             end
-            puts page_names
             # compare name in database to name on webpage and find the Levenshtein distances, select the one with the smallest distance
             names = page_names.map do |name| 
                 lev_dists = col_names.map do |oldname| 
@@ -60,8 +61,8 @@ namespace :scrape do
 
             # find today's counts on the page
             values = doc.css('td[width="14%"]>strong').map { |val| val.text.strip }
-byebug
             params = {fulldate: date}.merge(names.zip(values).to_h)
+            byebug
             params.delete("id")
             return params
         end
