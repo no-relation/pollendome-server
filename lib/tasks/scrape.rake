@@ -61,9 +61,10 @@ namespace :scrape do
 
         day = Day.new(todays_params)
         if day.valid?
-            puts "Created Day #{day.id}: #{day.fulldate}"
+            puts "Created Day: #{day.fulldate}"
             puts "Emailing home"
-            ApplicationMailer.new_day_log.deliver
+            # byebug
+            AppMailer.new_day_log(day).deliver
             day.save
         else
             puts day.errors.messages
