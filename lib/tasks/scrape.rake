@@ -22,7 +22,7 @@ namespace :scrape do
         "  Artemeisia (Sage)": 'sagebrush',
         "  Rumex (Sheep Sorel)": 'rumex',
         "  Asteraceae (Aster)": 'aster',
-        "  Cyperaceae(Sedge)": 'sedge'
+        "  Cyperaceae(Sedge)": 'sedge',
         "  Oidium/Erysiphe": 'powdery_mildew',
         "  Ascopores": 'ascomycetes',
         "  Smuts/Myxomycetes": 'myxomycete_smut'

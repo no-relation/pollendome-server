@@ -101,9 +101,9 @@ require "rubygems/text"
 
     doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))  
     # put Nokogiri output in easily parseable html code
-    webpageCode = File.open 'webpage.html', 'w'
-    webpageCode.write(doc)
-    webpageCode.close
+    # webpageCode = File.open 'webpage.html', 'w'
+    # webpageCode.write(doc)
+    # webpageCode.close
 
     # find date on page and turn into Date object
     date = doc.css('font[color="#02789C"]')[0].text
@@ -122,7 +122,7 @@ require "rubygems/text"
         "  Artemeisia (Sage)": 'sagebrush',
         "  Rumex (Sheep Sorel)": 'rumex',
         "  Asteraceae (Aster)": 'aster',
-        "  Cyperaceae(Sedge)": 'sedge'
+        "  Cyperaceae(Sedge)": 'sedge',
         "  Oidium/Erysiphe": 'powdery_mildew',
         "  Ascopores": 'ascomycetes',
         "  Smuts/Myxomycetes": 'myxomycete_smut'
@@ -147,19 +147,17 @@ require "rubygems/text"
     nameElements = doc.css('td[width="35%"]>strong')
     page_names = nameElements.map do |nm| 
         name = nm.text.strip
-        # if EXCEPTIONS.keys.include?(name.to_sym)
-        #     EXCEPTIONS[name.to_sym]
-        # else    
-        #     name 
-        # end
+        if EXCEPTIONS.keys.include?(name.to_sym)
+            EXCEPTIONS[name.to_sym]
+        else    
+            name 
+        end
     end
     names = page_names.map do |name| 
         lev_dists = col_names.map do |oldname| 
             ld.call(name, oldname)
         end
-        puts "#{name} -> #{col_names[lev_dists.index(lev_dists.min)]} at #{lev_dists.min}"
         col_names[lev_dists.index(lev_dists.min)]
-        byebug
     end
     puts "#{names.size} names"
 
