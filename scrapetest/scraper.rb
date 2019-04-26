@@ -1,3 +1,4 @@
+# WHEN WE LEFT OUR HERO, he was figuring out a better way to scrape, specifically one value at a time rather than zipping the names and the values. Need to find a CSS selector that gets the name, then corrects it to the actual database column name, then finds the cousin (not sibling) element with the associated value
 require 'nokogiri'
 require 'open-uri'
 require 'byebug'
@@ -149,8 +150,9 @@ require "rubygems/text"
         name = nm.text.strip
         if EXCEPTIONS.keys.include?(name.to_sym)
             EXCEPTIONS[name.to_sym]
-        elsif name.blank?
-            "???"
+        # only inside Rails
+        # elsif name.blank?
+        #     "???"
         else    
             name 
         end
