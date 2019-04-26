@@ -53,7 +53,6 @@ csvfilePOLLEN.each do |row|
     end
 end
 
-# TODO: change forecast so date is one year in the future?
 csvfilePollenDayForecast.each do |row|
     params = headersPDayCast.zip(row.map {|item| item.downcase.strip}).to_h
     params["fulldate"] = Date.strptime("2000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
@@ -66,8 +65,13 @@ csvfileMoldDayForecast.each do |row|
     params = headersMDayCast.zip(row.map {|item| item.downcase.strip}).to_h
     params["fulldate"] = Date.strptime("2000-#{params["day"]}", "%Y-%j") if params["day"] != "day"
     
-    day = Day.new(params)
-    days << day
+    dayIndex = days.find_index {|day| day.fulldate == params["fulldate"]}
+    if dayIndex
+        days[dayIndex].attributes = params 
+    else
+        day = Day.new(params)
+        days << day
+    end
 end
 
 Day.import days
