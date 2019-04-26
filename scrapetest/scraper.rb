@@ -1,3 +1,4 @@
+# WHEN WE LEFT OUR HERO, he was figuring out a better way to scrape, specifically one value at a time rather than zipping the names and the values. Need to find a CSS selector that gets the name, then corrects it to the actual database column name, then finds the cousin (not sibling) element with the associated value
 require 'nokogiri'
 require 'open-uri'
 require 'byebug'
@@ -95,9 +96,11 @@ require "rubygems/text"
                                                                                         "aster",
                                                                                         "nettle",
                                                                                         "magnolia",
-                                                                                        "wild_carrot"]      
-    doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
+                                                                                        "wild_carrot"]
+    
+    
 
+    doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))  
     # put Nokogiri output in easily parseable html code
     # webpageCode = File.open 'webpage.html', 'w'
     # webpageCode.write(doc)
@@ -116,7 +119,11 @@ require "rubygems/text"
         "  Tilia (Linden)": '???',
         "  Fraxinus (Ash)": 'ash',
         "  Ulmus (Elm)": 'elm',
+        "": '???',
         "  Artemeisia (Sage)": 'sagebrush',
+        "  Rumex (Sheep Sorel)": 'rumex',
+        "  Asteraceae (Aster)": 'aster',
+        "  Cyperaceae(Sedge)": 'sedge',
         "  Oidium/Erysiphe": 'powdery_mildew',
         "  Ascopores": 'ascomycetes',
         "  Smuts/Myxomycetes": 'myxomycete_smut'
@@ -143,23 +150,31 @@ require "rubygems/text"
         name = nm.text.strip
         if EXCEPTIONS.keys.include?(name.to_sym)
             EXCEPTIONS[name.to_sym]
+        # only inside Rails
+        # elsif name.blank?
+        #     "???"
         else    
             name 
         end
     end
-
+    page_names.each {|name| puts name}
+    byebug
     names = page_names.map do |name| 
         lev_dists = col_names.map do |oldname| 
             ld.call(name, oldname)
         end
         col_names[lev_dists.index(lev_dists.min)]
     end
-
+    puts "#{names.size} names"
 
     valueElements = doc.css('td[width="14%"]>strong')
-    values = valueElements.map do |nm| nm.text.strip end
+    values = valueElements.map do |val| val.text.strip end
+    puts "#{values.size} values"
     fulldate = {fulldate: date}
+    
+    params = fulldate.merge(names.zip(values).to_h)
+    params.each { |k,v| puts "#{k}: #{v}"}
+    puts "size: #{params.size}"
 
-    puts fulldate.merge(names.zip(values).to_h)
-    return {fulldate: date}.merge(names.zip(values).to_h)
+    return params
 # end
