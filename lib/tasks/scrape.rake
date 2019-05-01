@@ -36,7 +36,7 @@ namespace :scrape do
             doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
 
             # nokogiri selects page elements for species names; have to redo if webpage is redesigned
-            nameElements = doc.css('td[width="35%"]>strong')
+            nameElements = doc.css('td[width="35%"]')
             pageNames = nameElements.map do |nm| 
                 name = nm.text.strip
                 # replace known LevDist exceptions
@@ -57,13 +57,12 @@ namespace :scrape do
             end
 
             # find today's counts on the page
-            values = doc.css('td[width="14%"]>strong').map { |val| val.text.strip }
+            values = doc.css('td[width="14%"]').map { |val| val.text.strip }
 
             # find date on page and turn into text
             fulldate = {fulldate: doc.css('font[color="#02789C"]')[0].text}
 
-            params = {fulldate: date}.merge(names.zip(values).to_h)
-            byebug
+            params = fulldate.merge(names.zip(values).to_h)
             params.delete("id")
             return params
         end
@@ -72,8 +71,8 @@ namespace :scrape do
         if day.valid?
             puts "Created Day: #{day.fulldate}"
             puts "Emailing home"
-            AppMailer.new_day_log(day).deliver
             day.save
+            AppMailer.new_day_log(day).deliver
         else
             puts day.errors.messages
         end

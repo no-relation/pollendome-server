@@ -145,7 +145,7 @@ require "rubygems/text"
         # ["cercospora", "  Ascopores"], 7; actual: ascomycetes, 8
         # ["ascomycetes", "  Smuts/Myxomycetes"] 10; actual: myxomycete_smut, 12
 
-    nameElements = doc.css('td[width="35%"]>strong')
+    nameElements = doc.css('td[width="35%"]')
     pageNames = nameElements.map do |nm| 
         name = nm.text.strip
         if EXCEPTIONS.keys.include?(name.to_sym)
@@ -166,13 +166,12 @@ require "rubygems/text"
     end
     puts "#{names.size} names"
 
-    valueElements = doc.css('td[width="14%"]>strong')
+    valueElements = doc.css('td[width="14%"]')
     values = valueElements.map do |val| val.text.strip end
     puts "#{values.size} values"
     
     params = fulldate.merge(names.zip(values).to_h)
     params.each { |k,v| puts "#{k}: #{v}"}
-    byebug
     puts "size: #{params.size}"
 
     # table_lines = doc.css('tr[valign="top"]')
