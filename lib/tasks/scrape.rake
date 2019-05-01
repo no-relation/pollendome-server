@@ -67,11 +67,12 @@ namespace :scrape do
             return params
         end
 
+        puts "Scraping"
         day = Day.new(todays_params)
         if day.valid?
             puts "Created Day: #{day.fulldate}"
-            puts "Emailing home"
             day.save
+            puts "Emailing home"
             AppMailer.new_day_log(day).deliver
         else
             puts day.errors.messages

@@ -9,7 +9,7 @@ class AppMailer < ApplicationMailer
         dayParams = dayParamsList.join("\n")
         mail(
             to: "eddiec76@gmail.com", 
-            subject: "POLLENDOME created day #{day[:id]} - #{day[:fulldate]}", 
+            subject: "POLLENDOME created day #{day[:id]}: #{day[:fulldate]}", 
             body: dayParams
         )
     end
