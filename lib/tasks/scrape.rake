@@ -37,7 +37,7 @@ namespace :scrape do
 
             # nokogiri selects page elements for species names; have to redo if webpage is redesigned
             nameElements = doc.css('td[width="35%"]>strong')
-            page_names = nameElements.map do |nm| 
+            pageNames = nameElements.map do |nm| 
                 name = nm.text.strip
                 # replace known LevDist exceptions
                 if EXCEPTIONS.keys.include?(name.to_sym)
@@ -49,11 +49,11 @@ namespace :scrape do
                 end
             end
             # compare name in database to name on webpage and find the Levenshtein distances, select the one with the smallest distance
-            names = page_names.map do |name| 
-                lev_dists = col_names.map do |oldname| 
+            names = pageNames.map do |name| 
+                levDists = col_names.map do |oldname| 
                     ld.call(name, oldname)
                 end
-                col_names[lev_dists.index(lev_dists.min)]
+                col_names[levDists.index(levDists.min)]
             end
 
             # find today's counts on the page

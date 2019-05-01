@@ -8,7 +8,7 @@ require "rubygems/text"
     ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
     # current column names of Day table
-    col_names = ["id", "fulldate", "month", "date", "year", "day", "week", "created_at", "updated_at", 
+    colNames = ["id", "fulldate", "month", "date", "year", "day", "week", "created_at", "updated_at", 
     "acrodictys",
     "agrocybe",
     "algae",
@@ -146,7 +146,7 @@ require "rubygems/text"
         # ["ascomycetes", "  Smuts/Myxomycetes"] 10; actual: myxomycete_smut, 12
 
     nameElements = doc.css('td[width="35%"]>strong')
-    page_names = nameElements.map do |nm| 
+    pageNames = nameElements.map do |nm| 
         name = nm.text.strip
         if EXCEPTIONS.keys.include?(name.to_sym)
             EXCEPTIONS[name.to_sym]
@@ -157,13 +157,12 @@ require "rubygems/text"
             name 
         end
     end
-    page_names.each {|name| puts name}
-    byebug
-    names = page_names.map do |name| 
-        lev_dists = col_names.map do |oldname| 
+    pageNames.each {|name| puts name}
+    names = pageNames.map do |name| 
+        levDists = colNames.map do |oldname| 
             ld.call(name, oldname)
         end
-        col_names[lev_dists.index(lev_dists.min)]
+        colNames[levDists.index(levDists.min)]
     end
     puts "#{names.size} names"
 
@@ -173,7 +172,14 @@ require "rubygems/text"
     
     params = fulldate.merge(names.zip(values).to_h)
     params.each { |k,v| puts "#{k}: #{v}"}
+    byebug
     puts "size: #{params.size}"
+
+    # table_lines = doc.css('tr[valign="top"]')
+    # table_lines.each do |line|
+    #     puts line
+    #     byebug
+    # end
 
     return params
 # end
