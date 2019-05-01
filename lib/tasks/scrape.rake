@@ -29,14 +29,11 @@ namespace :scrape do
         }
 
         def todays_params
+            # current column names of Day table
             col_names = Day.columns.map{|col| col.name}
             ld = Class.new.extend(Gem::Text).method(:levenshtein_distance)
 
-            # current column names of Day table
             doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))
-
-            # find date on page and turn into text
-            date = doc.css('font[color="#02789C"]')[0].text
 
             # nokogiri selects page elements for species names; have to redo if webpage is redesigned
             nameElements = doc.css('td[width="35%"]>strong')
@@ -61,6 +58,10 @@ namespace :scrape do
 
             # find today's counts on the page
             values = doc.css('td[width="14%"]>strong').map { |val| val.text.strip }
+
+            # find date on page and turn into text
+            fulldate = {fulldate: doc.css('font[color="#02789C"]')[0].text}
+
             params = {fulldate: date}.merge(names.zip(values).to_h)
             byebug
             params.delete("id")

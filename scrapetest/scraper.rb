@@ -102,12 +102,12 @@ require "rubygems/text"
 
     doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))  
     # put Nokogiri output in easily parseable html code
-    webpageCode = File.open "webpage#{Time.now.to_i}.html", 'w'
+    webpageCode = File.open "webpage#{Date.today.jd}.html", 'w'
     webpageCode.write(doc)
     webpageCode.close
 
     # find date on page and turn into Date object
-    date = doc.css('font[color="#02789C"]')[0].text
+    fulldate = {fulldate: doc.css('font[color="#02789C"]')[0].text}
 
     # names where calculating Levenshtein distance doesn't give best answer
     EXCEPTIONS = {
@@ -170,7 +170,6 @@ require "rubygems/text"
     valueElements = doc.css('td[width="14%"]>strong')
     values = valueElements.map do |val| val.text.strip end
     puts "#{values.size} values"
-    fulldate = {fulldate: date}
     
     params = fulldate.merge(names.zip(values).to_h)
     params.each { |k,v| puts "#{k}: #{v}"}
