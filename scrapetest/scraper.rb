@@ -102,9 +102,9 @@ require "rubygems/text"
 
     doc = Nokogiri::HTML(open('http://www.houstontx.gov/health/Pollen-Mold/'))  
     # put Nokogiri output in easily parseable html code
-    # webpageCode = File.open 'webpage.html', 'w'
-    # webpageCode.write(doc)
-    # webpageCode.close
+    webpageCode = File.open "webpage#{Time.now.to_i}.html", 'w'
+    webpageCode.write(doc)
+    webpageCode.close
 
     # find date on page and turn into Date object
     date = doc.css('font[color="#02789C"]')[0].text
