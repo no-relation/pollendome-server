@@ -7,14 +7,17 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'csv'
 
+puts "destroying all the things"
 Feeling.destroy_all
 User.destroy_all
 Day.destroy_all
 
+puts "creating example Users"
 User.create(username: 'eddie', email: 'eddie@example.com', password: '0000')
 User.create(username: 'susann', email: 'susann@example.com', password: '0000')
 User.create(username: "Sneezy Dwarf", email: 'sneezy@fairy.land', password: '0000')
 
+puts "importing CSVs"
 csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
 csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
 csvfilePollenDayForecast = CSV.read("pollenDailyAverages.csv")
@@ -32,6 +35,7 @@ csvfileMoldDayForecast.shift
 
 days = []
 
+puts "creating Days"
 csvfileMOLD.each do |row|
     params = headersMOLD.zip(row.map {|item| item.downcase.strip}).to_h
     # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
@@ -74,10 +78,10 @@ csvfileMoldDayForecast.each do |row|
     end
 end
 
+puts "Saving Days"
 Day.import days
 
-# selected_day_id = Day.find_by(fulldate: "").id
-# Feeling.create(user_id: 3, rating: , day_id: selected_day_id)
+puts "feeling our Feelings"
 seed_user_id = User.find_by(email: 'sneezy@fairy.land').id
 selected_day_id = Day.find_by(fulldate: "2018-05-07").id
 Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
@@ -96,3 +100,5 @@ selected_day_id = Day.find_by(fulldate: "2018-09-18").id
 Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-09-19").id
 Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
+
+puts "database seeded"
