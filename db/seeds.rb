@@ -7,18 +7,22 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'csv'
 
+puts "destroying all the things"
 Feeling.destroy_all
 User.destroy_all
 Day.destroy_all
 
+puts "creating example Users"
 User.create(username: 'eddie', email: 'eddie@example.com', password: '0000')
 User.create(username: 'susann', email: 'susann@example.com', password: '0000')
 User.create(username: "Sneezy Dwarf", email: 'sneezy@fairy.land', password: '0000')
 
+puts "importing CSVs"
 csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
 csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
 csvfilePollenDayForecast = CSV.read("pollenDailyAverages.csv")
 csvfileMoldDayForecast = CSV.read("moldDailyAverages.csv")
+
 headersMOLD = csvfileMOLD[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPOLLEN = csvfilePOLLEN[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
@@ -30,19 +34,24 @@ csvfilePOLLEN.shift
 csvfilePollenDayForecast.shift
 csvfileMoldDayForecast.shift
 
-days = []
+puts "creating Species"
+notSpeciesName = ["fulldate","month","date","year","day","week"]
+pollenNames = headersPOLLEN.reject { |header| notSpeciesName.include?(header) }
+pollenNames.each{ |name| Species.create(name: name, species_type: "pollen") }
+moldNames = headersMOLD.reject { |header| notSpeciesName.include?(header) }
+moldNames.each{ |name| Species.create(name: name, species_type: "mold") }
 
+puts "creating Days"
+days = []
 csvfileMOLD.each do |row|
     params = headersMOLD.zip(row.map {|item| item.downcase.strip}).to_h
-    # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
-    
+
     day = Day.new(params)
     days << day
 end
 
 csvfilePOLLEN.each do |row|
     params = headersPOLLEN.zip(row.map {|item| item.downcase.strip}).to_h
-    # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
 
     dayIndex = days.find_index {|day| day.fulldate == Date.parse(params["fulldate"])}
     if dayIndex
@@ -74,10 +83,10 @@ csvfileMoldDayForecast.each do |row|
     end
 end
 
+puts "saving Days"
 Day.import days
 
-# selected_day_id = Day.find_by(fulldate: "").id
-# Feeling.create(user_id: 3, rating: , day_id: selected_day_id)
+puts "feeling our Feelings"
 seed_user_id = User.find_by(email: 'sneezy@fairy.land').id
 selected_day_id = Day.find_by(fulldate: "2018-05-07").id
 Feeling.create(user_id: seed_user_id, rating: 5, day_id: selected_day_id)
@@ -96,3 +105,5 @@ selected_day_id = Day.find_by(fulldate: "2018-09-18").id
 Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
 selected_day_id = Day.find_by(fulldate: "2018-09-19").id
 Feeling.create(user_id: seed_user_id, rating: 0, day_id: selected_day_id)
+
+puts "database seeded"
