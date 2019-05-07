@@ -22,6 +22,7 @@ csvfileMOLD = CSV.read('pollendromedataMOLD.csv')
 csvfilePOLLEN = CSV.read('pollendromedataPOLLEN.csv')
 csvfilePollenDayForecast = CSV.read("pollenDailyAverages.csv")
 csvfileMoldDayForecast = CSV.read("moldDailyAverages.csv")
+
 headersMOLD = csvfileMOLD[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPOLLEN = csvfilePOLLEN[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
 headersPDayCast = csvfilePollenDayForecast[0].map { |col| col.strip.downcase.gsub(' ', '_').gsub('/', '_').gsub(/[^\w_]/, '') }
@@ -33,20 +34,24 @@ csvfilePOLLEN.shift
 csvfilePollenDayForecast.shift
 csvfileMoldDayForecast.shift
 
-days = []
+puts "creating Species"
+notSpeciesName = ["fulldate","month","date","year","day","week"]
+pollenNames = headersPOLLEN.reject { |header| notSpeciesName.include?(header) }
+pollenNames.each{ |name| Species.create(name: name, species_type: "pollen") }
+moldNames = headersMOLD.reject { |header| notSpeciesName.include?(header) }
+moldNames.each{ |name| Species.create(name: name, species_type: "mold") }
 
 puts "creating Days"
+days = []
 csvfileMOLD.each do |row|
     params = headersMOLD.zip(row.map {|item| item.downcase.strip}).to_h
-    # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
-    
+
     day = Day.new(params)
     days << day
 end
 
 csvfilePOLLEN.each do |row|
     params = headersPOLLEN.zip(row.map {|item| item.downcase.strip}).to_h
-    # params["fulldate"] = Date.strptime(params["fulldate"], '%m/%d/%Y') if params["fulldate"] != "fulldate"
 
     dayIndex = days.find_index {|day| day.fulldate == Date.parse(params["fulldate"])}
     if dayIndex
@@ -78,7 +83,7 @@ csvfileMoldDayForecast.each do |row|
     end
 end
 
-puts "Saving Days"
+puts "saving Days"
 Day.import days
 
 puts "feeling our Feelings"
