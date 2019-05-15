@@ -7,6 +7,9 @@ Rails.application.routes.draw do
       get '/feelings/user/:id', to: 'feelings#userfind'
       resources :feelings
       resources :auth
+      resources :species
+      get 'species/find/:name', to: 'species#find'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
     end
   end
