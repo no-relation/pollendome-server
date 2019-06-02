@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'byebug'
 require "rubygems/text"
 
 namespace :scrape do

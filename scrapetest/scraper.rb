@@ -1,7 +1,6 @@
 # WHEN WE LEFT OUR HERO, he was figuring out a better way to scrape, specifically one value at a time rather than zipping the names and the values. Need to find a CSS selector that gets the name, then corrects it to the actual database column name, then finds the cousin (not sibling) element with the associated value
 require 'nokogiri'
 require 'open-uri'
-require 'byebug'
 require "rubygems/text"
 
 # def todays_params
